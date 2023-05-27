@@ -2,14 +2,16 @@ import Event from "../models/Event.js";
 import Venue from "../models/Venue.js";
 
 export const createEvent = async (req, res) => {
-  const event = new Event({ ...req.body, author: req.user._id });
   try {
+    const event = new Event({ ...req.body, author: req.user._id });
     await event.save();
-    await Venue.findByIdAndUpdate(event.venue, {
+    const myVenue = await Venue.findByIdAndUpdate(event.venue, {
       $push: {
         unavailableDates: event.dates,
       },
     });
+    myVenue.bookedCount = myVenue.bookedCount + 1;
+    myVenue.save();
     return res.status(200).json({
       status: "success",
       data: event,

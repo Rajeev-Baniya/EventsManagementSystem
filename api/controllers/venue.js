@@ -55,8 +55,16 @@ export const deleteVenue = async (req, res) => {
 };
 
 export const getAllVenue = async (req, res) => {
+  const { price, people, count, limit, ...others } = req.query;
   try {
-    const allVenue = await Venue.find();
+    const allVenue = await Venue.find({
+      ...others,
+      pricePerDay: { $lt: price || 9 * 1000000 },
+      maxCapacity: { $gt: people || 100 },
+    })
+      .limit(limit)
+      .sort(count ? { bookedCount: -1 } : {});
+    // const allVenue = await Venue.find();
     return res.status(200).json({
       status: "success",
       data: allVenue,
@@ -76,6 +84,31 @@ export const getVenueById = async (req, res) => {
       status: "success",
       data: venue,
     });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: error.stack,
+    });
+  }
+};
+
+export const availabityCheck = async (req, res) => {
+  try {
+    const venue = await Venue.findById(req.params.venueid);
+    const docs = await Venue.find({
+      unavailableDates: { $in: req.query.date },
+    });
+    if (docs.length > 0) {
+      return res.status(200).json({
+        status: "success",
+        message: "Venue is available, you can start booking",
+      });
+    } else {
+      return res.status(400).json({
+        status: "fail",
+        message: "Not available",
+      });
+    }
   } catch (error) {
     return res.status(500).json({
       status: "error",

@@ -11,6 +11,7 @@ import {
   deleteVenue,
   getAllVenue,
   getVenueById,
+  availabityCheck,
 } from "../controllers/venue.js";
 
 const router = express.Router();
@@ -22,6 +23,8 @@ router.get("/hi", (req, res) => {
 router.post("/", auth, verifyAdmin, createVenue);
 
 router.post("/:venueid", auth, verifyOwner, updateVenue);
+
+router.get("/availability/:venueid", auth, availabityCheck);
 
 router.delete("/:venueid", auth, verifyOwner, deleteVenue);
 

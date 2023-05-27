@@ -77,6 +77,7 @@ UserSchema.methods.generateAuthToken = async function () {
 
 UserSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
+
   if (!user) {
     throw new Error("User donot exist");
   }

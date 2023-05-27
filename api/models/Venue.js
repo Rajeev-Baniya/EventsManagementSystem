@@ -19,6 +19,10 @@ const VenueSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    city: {
+      type: String,
+      required: true,
+    },
     photos: {
       type: [String],
     },
@@ -41,6 +45,10 @@ const VenueSchema = new mongoose.Schema(
     },
     unavailableDates: {
       type: [Date],
+    },
+    bookedCount: {
+      type: Number,
+      default: 0,
     },
   },
   {

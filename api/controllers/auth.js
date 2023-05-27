@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
 export const register = async (req, res) => {
   try {
@@ -16,18 +17,32 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    console.log(req.body.email, req.body.password);
-    const user = await User.findByCredentials(
-      req.body.email,
-      req.body.password
-    );
-    console.log(user);
+    // const user = await User.findByCredentials(
+    //   req.body.email,
+    //   req.body.password
+    // );
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).json({
+        status: "fail",
+        message: "User not found",
+      });
+    }
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Username and password donot match",
+      });
+    }
+
     const token = await user.generateAuthToken();
     return res.status(200).json({
       status: "success",
       data: {
         id: user._id,
         email: user.email,
+        name: user.username,
       },
       token: token,
     });
