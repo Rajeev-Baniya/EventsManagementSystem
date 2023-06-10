@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { SearchContext } from "../../context/SearchContext";
 import { Link } from "react-router-dom";
 
 const BookNow = () => {
+  const { dispatch } = useContext(SearchContext);
+
+  const viewAll = () => {
+    dispatch({
+      type: "RESET_SEARCH",
+    });
+  };
   return (
     <>
       <div className="book-now text-center">
@@ -13,7 +21,7 @@ const BookNow = () => {
             aliquam dolore. Molestias et placeat laudantium nobis totam velit
             veniam enim.
           </p>
-          <Link to="/venue">
+          <Link to="/venue" onClick={viewAll}>
             <p
               className="availability mb-2"
               style={{ display: "inline-block" }}

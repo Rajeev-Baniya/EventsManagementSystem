@@ -5,6 +5,7 @@ import {
   getAllVenueEvents,
   getEventById,
   updateEvent,
+  getUsersEvents,
 } from "../controllers/event.js";
 import {
   verifyAdmin,
@@ -20,7 +21,7 @@ router.get("/hi", (req, res) => {
   res.send("Hello from Events route");
 });
 
-router.post("/", auth, createEvent);
+router.post("/:venueId", auth, createEvent);
 
 router.put("/:eventid", auth, verifyAuthor, updateEvent);
 
@@ -29,5 +30,6 @@ router.delete("/:eventid", auth, verifyAuthor, deleteEvent);
 router.get("/venue/:venueid", auth, verifyOwner, getAllVenueEvents);
 
 router.get("/:eventid", auth, getEventById);
+router.get("/user/:userid", auth, getUsersEvents);
 
 export default router;

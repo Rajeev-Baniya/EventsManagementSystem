@@ -1,12 +1,7 @@
 import React, { useState, useContext } from "react";
 import HomeCarousel from "../../components/homePageComp/HomeCarousel.jsx";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { toast } from "react-toastify";
-import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main css file
-import "react-date-range/dist/theme/default.css"; // theme css file
 import { SearchContext } from "../../context/SearchContext.js";
-// import { AuthContext } from "../../context/AuthContext.js";
 import { useNavigate, Link } from "react-router-dom";
 import searchSchema from "../../utils/formValidation/searchValidation.js";
 import TextError from "../../utils/TextError";
@@ -23,12 +18,10 @@ const Home = () => {
   };
   const navigate = useNavigate();
   const { dispatch } = useContext(SearchContext);
-  const { data, loading, error, reFetch } = useFetch(
-    `venue?count=bookedCount&limit=4`
-  );
+  const { data, loading } = useFetch(`venue?count=bookedCount&limit=4`);
   return (
     <>
-      {/* <HomeCarousel /> */}
+      <HomeCarousel />
       <div className="common-padding searchVenue">
         <h3 className="common-header">
           Search <span>Appropriate</span> Venue
@@ -42,7 +35,6 @@ const Home = () => {
               payload: values,
             });
             navigate("/venue", { state: values });
-            // console.log(values);
           }}
         >
           {({ isSubmitting }) => (
@@ -51,7 +43,7 @@ const Home = () => {
                 <div className="col-lg-3 col-md-6">
                   <div className="form-pack">
                     <label htmlFor="place">
-                      <i class="fa-solid fa-location-dot"></i> Destination:
+                      <i className="fa-solid fa-location-dot"></i> Destination:
                     </label>
                     <Field
                       type="text"

@@ -4,8 +4,9 @@ import axios from "axios";
 
 const setJwt = (jwt) => {
   const newJwt = jwt.replaceAll('"', "");
+  //   console.log(newJwt);
   axios.defaults.headers.common["Authorization"] = `Bearer ${newJwt}`;
-  console.log(axios.defaults.headers);
+  //   console.log(axios.defaults.headers);
 };
 
 const http = {

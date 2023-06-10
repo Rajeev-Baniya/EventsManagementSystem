@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { NavLink, Link, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logos.png";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [openSidebar, setOpenSidebar] = useState(false);
   const exposeSidebar = () => {
-    // console.log("hello");
     setOpenSidebar(!openSidebar);
   };
   useEffect(() => {
@@ -19,6 +20,7 @@ const Navbar = () => {
   const { user, dispatch } = useContext(AuthContext);
   const logout = () => {
     dispatch({ type: "LOGOUT" });
+    navigate("/");
     toast.success("User logged out successfully");
   };
   return (
@@ -35,7 +37,7 @@ const Navbar = () => {
           {user ? (
             <ul className="right-items right-items1">
               <li>
-                <NavLink activeClassName="active" to="/bookings">
+                <NavLink activeclassname="active" to="/bookings">
                   My Bookings
                 </NavLink>
               </li>
@@ -54,12 +56,12 @@ const Navbar = () => {
           ) : (
             <ul className="right-items right-items1">
               <li>
-                <NavLink activeClassName="active" to="/login">
+                <NavLink activeclassname="active" to="/login">
                   Login
                 </NavLink>
               </li>
               <li>
-                <NavLink activeClassName="active" to="/register">
+                <NavLink activeclassname="active" to="/register">
                   Register
                 </NavLink>
               </li>
@@ -95,12 +97,12 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <NavLink activeClassName="active" to="/login">
+                <NavLink activeclassname="active" to="/login">
                   Login
                 </NavLink>
               </li>
               <li>
-                <NavLink activeClassName="active" to="/register">
+                <NavLink activeclassname="active" to="/register">
                   Register
                 </NavLink>
               </li>

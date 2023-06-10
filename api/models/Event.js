@@ -7,15 +7,23 @@ const EventSchema = new mongoose.Schema(
       required: true,
     },
     venue: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Venue",
-      required: true,
+      venueId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Venue",
+        required: true,
+      },
+      venueName: {
+        type: String,
+        required: true,
+      },
     },
+
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
     dates: {
       type: Date,
       required: true,

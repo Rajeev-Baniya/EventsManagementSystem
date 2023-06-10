@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useParams, useNavigate } from "react-router-dom";
 import wed1 from "../../assets/images/wed.jpg";
@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import bookSchema from "../../utils/formValidation/bookValidation";
 import TextError from "../../utils/TextError";
 import { toast } from "react-toastify";
+import venue, { checkAvailabilty } from "../../services/venueService";
 
 import event from "../../services/eventService";
 
@@ -17,6 +18,7 @@ const Book = () => {
   let { vid } = useParams();
   const { data, loading, error, reFetch } = useFetch(`/venue/${vid}`);
   const { dispatch, price, people, place, date } = useContext(SearchContext);
+
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -26,9 +28,24 @@ const Book = () => {
     }
   }, [navigate, user]);
 
+  useEffect(() => {
+    const chkAvailability = async () => {
+      try {
+        const res = await venue.checkAvailabilty(`${vid}?date=${date}`);
+        console.log(res);
+        toast.success("Date is availabile, You can book now");
+      } catch (error) {
+        toast.error("Date is not available");
+        console.log(error);
+      }
+    };
+    if (date) {
+      chkAvailability();
+    }
+  }, [date, vid]);
+
   const formData = {
     name: "",
-    venue: vid,
     author: user ? user?._id : "",
     dates: date ? date : "",
     expectedPeople: "",
@@ -72,11 +89,21 @@ const Book = () => {
               onSubmit={async (values, actions) => {
                 actions.setSubmitting(true);
                 try {
-                  const res = await event.createEvent(values);
+                  const res = await venue.checkAvailabilty(
+                    `${vid}?date=${values.dates}`
+                  );
                   console.log(res);
-                  actions.setSubmitting(false);
-                  navigate("/bookings");
-                  toast.success("Event Booked Successfully");
+                  if (res.data.status === "success") {
+                    await event.createEvent(values, vid);
+                    actions.setSubmitting(false);
+                    dispatch({
+                      type: "RESET_SEARCH",
+                    });
+                    navigate("/bookings");
+                    toast.success("Event Booked Successfully");
+                  } else {
+                    toast.error("Date is not abailable");
+                  }
                 } catch (error) {
                   actions.setSubmitting(false);
                   toast.error(error.response.data.message);
@@ -105,6 +132,14 @@ const Book = () => {
                     name="dates"
                     autoComplete="off"
                     placeholder="Select Date"
+                    min={
+                      new Date(
+                        new Date().getTime() -
+                          new Date().getTimezoneOffset() * 60000
+                      )
+                        .toISOString()
+                        .split("T")[0]
+                    }
                   />
                   <ErrorMessage name="dates" component={TextError} />
                 </div>
@@ -116,7 +151,7 @@ const Book = () => {
                     type="number"
                     name="expectedPeople"
                     autoComplete="off"
-                    placeholder="eg : Marriage"
+                    placeholder="eg: 600"
                   />
                   <ErrorMessage name="expectedPeople" component={TextError} />
                 </div>

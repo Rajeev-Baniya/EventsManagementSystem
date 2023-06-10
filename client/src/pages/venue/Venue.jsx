@@ -7,14 +7,15 @@ import { SearchContext } from "../../context/SearchContext.js";
 
 const Venue = () => {
   const location = useLocation();
+  const { dispatch, place, date, price } = useContext(SearchContext);
+
   const formData = {
-    place: location.state?.place ? location.state.place : "",
-    date: location.state?.date ? location.state.date : "",
+    place: place ? place : "",
+    date: date ? date : "",
     people: "",
-    price: location.state?.price ? location.state.price : "",
+    price: price ? price : "",
   };
   const formRef = useRef();
-  const { dispatch } = useContext(SearchContext);
 
   const { data, loading, error, reFetch } = useFetch(
     formRef.current?.values.place == ""

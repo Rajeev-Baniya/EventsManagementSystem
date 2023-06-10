@@ -98,9 +98,10 @@ export const availabityCheck = async (req, res) => {
     const docs = await Venue.find({
       unavailableDates: { $in: req.query.date },
     });
-    if (docs.length > 0) {
+    if (docs.length == 0) {
       return res.status(200).json({
         status: "success",
+        data: { venue },
         message: "Venue is available, you can start booking",
       });
     } else {
