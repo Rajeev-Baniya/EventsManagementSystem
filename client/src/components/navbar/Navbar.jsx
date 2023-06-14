@@ -17,12 +17,13 @@ const Navbar = () => {
     setOpenSidebar(false);
   }, [location]);
 
-  const { user, dispatch } = useContext(AuthContext);
+  const { user, dispatch, isAdmin } = useContext(AuthContext);
   const logout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
     toast.success("User logged out successfully");
   };
+  //   console.log(isAdmin);
   return (
     <>
       <nav className="nav">
@@ -33,26 +34,68 @@ const Navbar = () => {
             </Link>
           </li>
         </ul>
+
         <ul className="right-items">
           {user ? (
-            <ul className="right-items right-items1">
-              <li>
-                <NavLink activeclassname="active" to="/bookings">
-                  My Bookings
-                </NavLink>
-              </li>
+            !isAdmin ? (
+              <ul className="right-items right-items1">
+                <li>
+                  <NavLink activeclassname="active" to="/bookings">
+                    My Bookings
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink activeclassname="active" to="/venue">
+                    Venues
+                  </NavLink>
+                </li>
 
-              <li className="user">
-                <p className="userdetail">
-                  <i class="fa-solid fa-user"></i>{" "}
-                  <span className="username">{user.name}</span>
-                  <i class="fa-solid fa-caret-down"></i>
-                </p>
-                <p className="showme" onClick={logout}>
-                  Logout
-                </p>
-              </li>
-            </ul>
+                <li className="user">
+                  <p className="userdetail">
+                    <i class="fa-solid fa-user"></i>{" "}
+                    <span className="username">{user.name}</span>
+                    <i class="fa-solid fa-caret-down"></i>
+                  </p>
+                  <p className="showme" onClick={logout}>
+                    Logout
+                  </p>
+                </li>
+              </ul>
+            ) : (
+              <ul className="right-items right-items1">
+                <li>
+                  <NavLink activeclassname="active" to="/venues">
+                    Venues
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink activeclassname="active" to="/allbookings">
+                    Bookings
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink activeclassname="active" to="/users">
+                    Users
+                  </NavLink>
+                </li>
+
+                <li className="user">
+                  <p className="userdetail">
+                    <i class="fa-solid fa-user"></i>{" "}
+                    <span className="username">
+                      {user.name}
+                      {isAdmin && <span>(Admin)</span>}
+                    </span>
+                    <i class="fa-solid fa-caret-down"></i>
+                  </p>
+                  <p className="showme" onClick={logout}>
+                    Logout
+                  </p>
+                </li>
+              </ul>
+            )
           ) : (
             <ul className="right-items right-items1">
               <li>
@@ -89,11 +132,38 @@ const Navbar = () => {
           id="sidebar-items"
         >
           {user ? (
-            <>
-              <li onClick={logout}>
-                <Link>Logout</Link>
-              </li>
-            </>
+            isAdmin ? (
+              <>
+                <li>
+                  <Link>
+                    {user.name}
+                    {isAdmin && <span>(Admin)</span>}
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/venues">Venues</Link>
+                </li>
+                <li>
+                  <Link to="/venues">Booking</Link>
+                </li>
+                <li>
+                  <Link to="/venues">Users</Link>
+                </li>
+                <li onClick={logout}>
+                  <Link>Logout</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link>My Bookings</Link>
+                </li>
+                <li onClick={logout}>
+                  <Link>Logout</Link>
+                </li>
+              </>
+            )
           ) : (
             <>
               <li>

@@ -9,13 +9,27 @@ const getJwt = () => {
 };
 
 export const checkAvailabilty = async (values) => {
-  http.setJwt(getJwt());
-
   const response = await http.get(`${apiChkVnuAvl}${values}`);
-  //   console.log(response);
-
   return response;
 };
 
-const venue = { checkAvailabilty };
+export const deleteVenue = async (id) => {
+  const response = await http.delete(`/venue/${id}`);
+  return response;
+};
+
+export const editVenue = async (id, values) => {
+  const response = await http.put(`/venue/${id}`, values);
+  return response;
+};
+
+export const createVenue = async (values) => {
+  const response = await http.post(`/venue`, values);
+  return response;
+};
+
+http.setJwt(getJwt());
+
+const venue = { checkAvailabilty, deleteVenue, editVenue, createVenue };
+
 export default venue;

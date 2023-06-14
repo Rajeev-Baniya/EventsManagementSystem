@@ -20,12 +20,27 @@ export const userEvents = async (uid) => {
 
 export const deleteEvent = async (id) => {
   const response = await http.delete(`/events/${id}`);
-  console.log(id);
+  return response;
+};
+
+export const getAllBookings = async () => {
+  const response = await http.get(`/allevents/`);
+  return response;
+};
+
+export const editEvent = async (id, values) => {
+  const response = await http.put(`/events/${id}`, values);
   return response;
 };
 
 http.setJwt(getJwt());
 
-const event = { createEvent, userEvents, deleteEvent };
+const event = {
+  createEvent,
+  userEvents,
+  deleteEvent,
+  getAllBookings,
+  editEvent,
+};
 
 export default event;

@@ -22,7 +22,7 @@ router.get("/hi", (req, res) => {
 
 router.post("/", auth, verifyAdmin, createVenue);
 
-router.post("/:venueid", auth, verifyOwner, updateVenue);
+router.put("/:venueid", auth, verifyAdmin, updateVenue);
 
 router.get("/availability/:venueid", auth, availabityCheck);
 

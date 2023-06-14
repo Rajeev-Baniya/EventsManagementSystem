@@ -20,22 +20,31 @@ const Book = lazy(() => import("./pages/book/Book"));
 const MyBookings = lazy(() => import("./pages/book/MyBookings"));
 const Home = lazy(() => import("./pages/home/Home"));
 
+const Allusers = lazy(() => import("./pages/admin/Users/Allusers"));
+const Venues = lazy(() => import("./pages/admin/Venues/Venues"));
+const Bookings = lazy(() => import("./pages/admin/Bookings/Bookings"));
+
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <ToastContainer />
-      <Suspense fallback={<h1>Loading...</h1>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/venue" element={<Venue />} />
-          <Route path="/city" element={<City />} />
-          <Route path="/book/:vid" element={<Book />} />
-          <Route path="/bookings" element={<MyBookings />} />
-        </Routes>
-      </Suspense>
+      <div className="main-container">
+        <Suspense fallback={<h1 className="common-padding">Loading...</h1>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/venue" element={<Venue />} />
+            <Route path="/city" element={<City />} />
+            <Route path="/book/:vid" element={<Book />} />
+            <Route path="/bookings" element={<MyBookings />} />
+            <Route path="/users" element={<Allusers />} />
+            <Route path="/venues" element={<Venues />} />
+            <Route path="/allbookings" element={<Bookings />} />
+          </Routes>
+        </Suspense>
+      </div>
       <Footer />
     </BrowserRouter>
   );

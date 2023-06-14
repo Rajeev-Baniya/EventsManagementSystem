@@ -63,7 +63,7 @@ export const getAllVenue = async (req, res) => {
       maxCapacity: { $gt: people || 100 },
     })
       .limit(limit)
-      .sort(count ? { bookedCount: -1 } : {});
+      .sort(count ? { bookedCount: -1 } : {_id: -1});
     // const allVenue = await Venue.find();
     return res.status(200).json({
       status: "success",

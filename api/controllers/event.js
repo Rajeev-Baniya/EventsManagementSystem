@@ -28,14 +28,14 @@ export const createEvent = async (req, res) => {
   }
 };
 
-export const updateEvent = async (req, res, next) => {
+export const updateEvent = async (req, res) => {
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.eventid,
       { $set: req.body },
       { new: true }
     );
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       data: updatedEvent,
     });
@@ -99,6 +99,15 @@ export const getEventById = async (req, res) => {
       });
     }
     return res.status(200).json({ status: "success", data: event });
+  } catch (error) {
+    return res.status(500).json({ status: "error", message: error.stack });
+  }
+};
+
+export const getAllEvents = async (req, res) => {
+  try {
+    const events = await Event.find();
+    return res.status(200).json({ status: "success", data: events });
   } catch (error) {
     return res.status(500).json({ status: "error", message: error.stack });
   }

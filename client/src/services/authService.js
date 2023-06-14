@@ -13,6 +13,11 @@ export const register = async (values) => {
   return response;
 };
 
-const auth = { login, register };
+export const userDelete = async (id) => {
+  const response = await http.delete(`users/${id}`);
+  return response;
+};
+
+const auth = { login, register, userDelete };
 
 export default auth;

@@ -28,7 +28,6 @@ const Login = () => {
           dispatch({ type: "LOGIN_START" });
           try {
             const res = await auth.login(values);
-            // console.log(values);
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
             actions.setSubmitting(false);
             navigate("/");
@@ -36,7 +35,6 @@ const Login = () => {
           } catch (error) {
             dispatch({ type: "LOGIN_FAILURE", payload: error.response.data });
             actions.setSubmitting(false);
-            // console.log(error.response.data);
             toast.error(error.response.data.message);
           }
         }}
