@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import HomeCarousel from "../../components/homePageComp/HomeCarousel.jsx";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { SearchContext } from "../../context/SearchContext.js";
@@ -79,8 +79,8 @@ const Home = () => {
                 <div className="col-lg-3 col-md-6">
                   <div className="form-pack">
                     <label htmlFor="place">
-                      <i class="fa-solid fa-indian-rupee-sign"></i> Min Price
-                      Per Day:
+                      <i className="fa-solid fa-indian-rupee-sign"></i> Min
+                      Price Per Day:
                     </label>
                     <Field
                       type="text"
@@ -105,7 +105,7 @@ const Home = () => {
           )}
         </Formik>
       </div>
-      <div class="common-padding cityVenue">
+      <div className="common-padding cityVenue">
         <h3 className="common-header">
           Venues in <span>Famous</span> Cities
         </h3>
@@ -149,7 +149,7 @@ const Home = () => {
             "loading..."
           ) : (
             <>
-              {data.data && data.data.length > 0 ? (
+              {data?.data && data?.data?.length > 0 ? (
                 data.data.map((item) => (
                   <MostBooked key={item._id} item={item} rang="#51cf66" />
                 ))

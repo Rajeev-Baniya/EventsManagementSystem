@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import { useParams, useNavigate } from "react-router-dom";
 import wed1 from "../../assets/images/wed.jpg";
@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import bookSchema from "../../utils/formValidation/bookValidation";
 import TextError from "../../utils/TextError";
 import { toast } from "react-toastify";
-import venue, { checkAvailabilty } from "../../services/venueService";
+import venue from "../../services/venueService";
 
 import event from "../../services/eventService";
 
@@ -16,8 +16,8 @@ const Book = () => {
   const navigate = useNavigate();
 
   let { vid } = useParams();
-  const { data, loading, error, reFetch } = useFetch(`/venue/${vid}`);
-  const { dispatch, price, people, place, date } = useContext(SearchContext);
+  const { data } = useFetch(`/venue/${vid}`);
+  const { dispatch, date } = useContext(SearchContext);
 
   const { user } = useContext(AuthContext);
 
@@ -54,11 +54,15 @@ const Book = () => {
   return (
     <>
       <div className="common-padding book">
-        <h3 className="common-header">{data.data?.name}</h3>
+        <h3 className="common-header">{data?.data?.name}</h3>
         <div className="row g-5 justify-content-between">
           <div className="col-lg-5">
             <div className="most-booked_each">
-              <img src={wed1} alt="hotel" className="mb-2" />
+              <img
+                src={data?.data?.photos || wed1}
+                alt="hotel"
+                className="mb-2"
+              />
               <div className="p-3 d-flex justify-content-between">
                 <div>
                   <h3>{data?.data?.name}</h3>

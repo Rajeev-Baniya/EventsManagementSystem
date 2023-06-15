@@ -1,16 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Home from "./pages/home/Home";
-// import Login from "./pages/login/Login";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
-// import Register from "./pages/register/Register";
 import Footer from "./components/footer/Footer";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import Venue from "./pages/venue/Venue";
-// import City from "./pages/city/City";
-// import Book from "./pages/book/Book";
-// import MyBookings from "./pages/book/MyBookings";
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 
 const Login = lazy(() => import("./pages/login/Login"));
 const Register = lazy(() => import("./pages/register/Register"));
@@ -25,8 +18,12 @@ const Venues = lazy(() => import("./pages/admin/Venues/Venues"));
 const Bookings = lazy(() => import("./pages/admin/Bookings/Bookings"));
 
 function App() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <ToastContainer />
       <div className="main-container">
@@ -46,7 +43,7 @@ function App() {
         </Suspense>
       </div>
       <Footer />
-    </BrowserRouter>
+    </>
   );
 }
 

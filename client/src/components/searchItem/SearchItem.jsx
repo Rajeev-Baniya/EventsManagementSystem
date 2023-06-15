@@ -6,7 +6,7 @@ const SearchItem = ({ item }) => {
   return (
     <div className="row justify-content-between search-item">
       <div className="col-lg-3">
-        <img src={defImage} alt="Hotel" />
+        <img src={item.photos || defImage} alt="Hotel" />
       </div>
       <div className="col-lg-9">
         <div className="d-flex justify-content-between">

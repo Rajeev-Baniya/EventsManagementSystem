@@ -15,7 +15,11 @@ const MostBooked = ({ item, rang }) => {
   return (
     <div className="col-lg-3 p-4">
       <div className="most-booked_each">
-        <LazyLoadImage src={wed1} alt="hotel" className="mb-2" />
+        <LazyLoadImage
+          src={item?.photos || wed1}
+          alt="hotel"
+          className="mb-2"
+        />
         <div className="p-3">
           <h3>{item.name}</h3>
           <p className="type mb-3"> {item.type} </p>

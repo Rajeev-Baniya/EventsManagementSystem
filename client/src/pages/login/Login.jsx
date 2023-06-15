@@ -12,7 +12,7 @@ import { AuthContext } from "../../context/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
 
-  const { user, loading, error, dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
 
   const formData = {
     email: "",
@@ -68,7 +68,6 @@ const Login = () => {
             <button type="submit" className="log-btn" disabled={isSubmitting}>
               Login
             </button>
-            {/* {error && <p className="error mt-3">Error: {error.message} !</p>} */}
           </Form>
         )}
       </Formik>

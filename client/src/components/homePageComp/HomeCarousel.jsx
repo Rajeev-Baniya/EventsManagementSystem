@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
 import wed1 from "../../assets/images/wed.jpg";
-import wed2 from "../../assets/images/wed1.jpg";
+import wed2 from "../../assets/images/wed3.jpg";
 import wed3 from "../../assets/images/wed2.jpg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 

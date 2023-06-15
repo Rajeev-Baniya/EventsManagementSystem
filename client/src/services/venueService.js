@@ -24,6 +24,7 @@ export const editVenue = async (id, values) => {
 };
 
 export const createVenue = async (values) => {
+  http.setJwt(getJwt());
   const response = await http.post(`/venue`, values);
   return response;
 };

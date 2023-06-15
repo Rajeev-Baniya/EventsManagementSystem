@@ -24,7 +24,7 @@ const VenueSchema = new mongoose.Schema(
       required: true,
     },
     photos: {
-      type: [String],
+      type: String,
     },
     desc: {
       type: String,

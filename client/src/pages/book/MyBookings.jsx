@@ -3,11 +3,16 @@ import event from "../../services/eventService";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useFetch from "../../hooks/useFetch";
+import EditMyBooking from "./EditMyBookings";
 
 const MyBookings = () => {
+  const [activeModal, setActiveModal] = useState(null);
+
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const { data, loading, error, reFetch } = useFetch(`/events/user/${user.id}`);
 
   useEffect(() => {
     if (!user) {
@@ -15,13 +20,13 @@ const MyBookings = () => {
     }
   }, [navigate, user]);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const res = await event.userEvents(user.id);
-      setEvents(res.data.data);
-    };
-    fetchEvents();
-  }, [user]);
+  const hideModal = () => {
+    setActiveModal(null);
+  };
+
+  const clickHandler = (e, index) => {
+    setActiveModal(index);
+  };
 
   const deleteBooking = async (id) => {
     if (window.confirm("Are you sure you want to delete it?")) {
@@ -38,7 +43,7 @@ const MyBookings = () => {
 
   return (
     <div className="common-padding">
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">id</th>
@@ -51,8 +56,8 @@ const MyBookings = () => {
           </tr>
         </thead>
         <tbody>
-          {events && events.length > 0 ? (
-            events.map((item) => (
+          {data?.data && data?.data?.length > 0 ? (
+            data?.data?.map((item, index) => (
               <tr key={item._id}>
                 <td>{item._id}</td>
                 <td>{item.name}</td>
@@ -61,7 +66,7 @@ const MyBookings = () => {
                 <td>{item.dates.substring(0, 10)}</td>
                 <td>{item.expectedPeople}</td>
 
-                <td className="edit">
+                <td className="edit" onClick={(e) => clickHandler(e, index)}>
                   <i className="fa-solid fa-pen-to-square"></i>
                 </td>
                 <td className="delete">
@@ -70,6 +75,12 @@ const MyBookings = () => {
                     onClick={() => deleteBooking(item._id)}
                   ></i>
                 </td>
+                <EditMyBooking
+                  show={activeModal === index}
+                  hideModal={hideModal}
+                  item={item}
+                  reFetch={reFetch}
+                />
               </tr>
             ))
           ) : (

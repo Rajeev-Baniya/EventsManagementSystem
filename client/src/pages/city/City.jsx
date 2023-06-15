@@ -5,7 +5,7 @@ import useFetch from "../../hooks/useFetch";
 
 const City = () => {
   const [queryParameters] = useSearchParams();
-  const { data, loading, error, reFetch } = useFetch(
+  const { data, loading } = useFetch(
     `venue?city=${queryParameters.get("name")}`
   );
   //   console.log(data);

@@ -1,13 +1,14 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import useFetch from "../../hooks/useFetch";
 import SearchItem from "../../components/searchItem/SearchItem";
 import { SearchContext } from "../../context/SearchContext.js";
+import Pagination from "../../components/pagination/Pagination";
 
 const Venue = () => {
-  const location = useLocation();
   const { dispatch, place, date, price } = useContext(SearchContext);
+  const [currentItems, setCurrentItems] = useState([]);
 
   const formData = {
     place: place ? place : "",
@@ -17,7 +18,7 @@ const Venue = () => {
   };
   const formRef = useRef();
 
-  const { data, loading, error, reFetch } = useFetch(
+  const { data, loading, reFetch } = useFetch(
     formRef.current?.values.place == ""
       ? `venue?price=${formRef.current?.values.price}&people=${formRef.current?.values.people}&count=bookedCount`
       : `venue?city=${formRef.current?.values.place}&price=${formRef.current?.values.price}&people=${formRef.current?.values.people}&count=bookedCount`
@@ -41,7 +42,7 @@ const Venue = () => {
               <Form>
                 <div className="form-pack">
                   <label htmlFor="place">
-                    <i class="fa-solid fa-location-dot"></i> Destination:
+                    <i className="fa-solid fa-location-dot"></i> Destination:
                   </label>
                   <Field
                     type="text"
@@ -52,7 +53,7 @@ const Venue = () => {
                 </div>
                 <div className="form-pack">
                   <label htmlFor="place">
-                    <i class="fa-solid fa-calendar-days"></i> Date:
+                    <i className="fa-solid fa-calendar-days"></i> Date:
                   </label>
                   <Field
                     type="date"
@@ -71,7 +72,7 @@ const Venue = () => {
                 </div>
                 <div className="form-pack">
                   <label htmlFor="people">
-                    <i class="fa-solid fa-users"></i> Max Capacity:
+                    <i className="fa-solid fa-users"></i> Max Capacity:
                   </label>
                   <Field
                     type="text"
@@ -103,15 +104,20 @@ const Venue = () => {
           {loading ? (
             "loading"
           ) : (
-            <>
-              {data.data &&
-                data.data.map((item) => (
+            <div>
+              {currentItems &&
+                currentItems.map((item) => (
                   <div className="py-5">
                     <SearchItem item={item} key={item._id} />
                   </div>
                 ))}
-            </>
+            </div>
           )}
+          <Pagination
+            data={data.data}
+            currentItems={currentItems}
+            setCurrentItems={setCurrentItems}
+          />
         </div>
       </div>
     </div>

@@ -62,7 +62,7 @@ const Venues = () => {
       <hr className="mb-5" />
 
       <div className="table-container">
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">id</th>
