@@ -12,7 +12,7 @@ const MyBookings = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
-  const { data, loading, error, reFetch } = useFetch(`/events/user/${user.id}`);
+  const { data, reFetch } = useFetch(`/events/user/${user.id}`);
 
   useEffect(() => {
     if (!user) {

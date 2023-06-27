@@ -68,6 +68,8 @@ const Bookings = () => {
               <th scope="col">Venue</th>
               <th scope="col">Date</th>
               <th scope="col">Expected People</th>
+              <th scope="col">Booked By</th>
+
               <th scope="col">Edit</th>
               <th scope="col">Delete</th>
             </tr>
@@ -82,6 +84,7 @@ const Bookings = () => {
                   <td>{item.venue.venueName}</td>
                   <td>{item.dates.substring(0, 10)}</td>
                   <td>{item.expectedPeople}</td>
+                  <td>{item.author.authorName}</td>
 
                   <td className="edit" onClick={(e) => clickHandler(e, index)}>
                     <i className="fa-solid fa-pen-to-square"></i>

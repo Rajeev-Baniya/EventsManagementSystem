@@ -16,6 +16,7 @@ export const auth = async (req, res, next) => {
     }
     req.user = user;
     req.token = token;
+    // console.log(req.user);
     next();
   } catch (error) {
     return res.status(400).json({
@@ -24,23 +25,6 @@ export const auth = async (req, res, next) => {
     });
   }
 };
-
-// export const verifyUser = (req, res, next) => {
-//   const token = req.header("Authorization").replace("Bearer ", "");
-//   if (!token) {
-//     throw new Error("You are not authenticated");
-//   }
-//   jwt.verify(token, process.env.JWT, (err, user) => {
-//     if (err) {
-//       return next(createError(401, "User is not valid"));
-//     }
-//     console.log(user.isAdmin);
-//     if (user._id !== req.params.id || user.isAdmin == "false") {
-//       throw new Error("Unauthorized User");
-//     }
-//     next();
-//   });
-// };
 
 export const verifyUser = (req, res, next) => {
   if (req.user._id == req.params.id || req.user.isAdmin) {
@@ -51,19 +35,6 @@ export const verifyUser = (req, res, next) => {
 };
 
 export const verifyAdmin = (req, res, next) => {
-  //   const token = req.header("Authorization").replace("Bearer ", "");
-  //   if (!token) {
-  //     return next(createError(401, "You are not authorized"));
-  //   }
-  //   jwt.verify(token, process.env.JWT, (err, user) => {
-  //     if (err) {
-  //       return next(createError(401, "Token is invalid"));
-  //     }
-  //     if (!user.isAdmin) {
-  //       return next(createError(401, "Unauthorized User"));
-  //     }
-  //     next();
-  //   });
   if (req.user.isAdmin) {
     next();
   } else {
@@ -96,7 +67,8 @@ export const verifyAuthor = async (req, res, next) => {
     if (!event) {
       return next(createError(403, "Not Found"));
     }
-    if (event.author.toString() == req.user._id || req.user.isAdmin) {
+    if (event.author.authorId.toString() == req.user._id || req.user.isAdmin) {
+      // if (event.author.toString() == req.user._id || req.user.isAdmin) {
       next();
     } else {
       return next(createError(403, "You are not authorized!"));

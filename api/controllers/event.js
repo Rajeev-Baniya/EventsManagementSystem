@@ -5,9 +5,11 @@ export const createEvent = async (req, res) => {
   try {
     const theVenue = await Venue.findById(req.params.venueId);
     const event = new Event({ ...req.body, author: req.user._id });
-    console.log(theVenue);
+    // console.log(theVenue);
     event.venue.venueId = theVenue._id;
     event.venue.venueName = theVenue.name;
+    event.author.authorId = req.user._id;
+    event.author.authorName = req.user.username;
     await event.save();
     const myVenue = await Venue.findByIdAndUpdate(event.venue.venueId, {
       $push: {
@@ -115,7 +117,7 @@ export const getAllEvents = async (req, res) => {
 
 export const getUsersEvents = async (req, res) => {
   try {
-    const events = await Event.find({ author: req.params.userid });
+    const events = await Event.find({ "author.authorId": req.params.userid });
     return res.status(200).json({ status: "success", data: events });
   } catch (error) {
     return res.status(500).json({ status: "error", message: error.stack });
