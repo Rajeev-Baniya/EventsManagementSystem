@@ -4,7 +4,7 @@ import { verifyAdmin, verifyUser, auth } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/hi", verifyAdmin, (req, res) => {
+router.get("/hi", (req, res) => {
   res.send("Hello from auth route");
 });
 
